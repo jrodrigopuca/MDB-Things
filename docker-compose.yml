@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  db:
+    image: mongo
+    container_name: ${CONTAINER_NAME}
+    ports:
+      - "3000-3003:3000"
+    volumes:
+      - ${LOCAL_DIR}:${CONTAINER_DIR}
