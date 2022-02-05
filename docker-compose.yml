@@ -6,6 +6,5 @@ services:
     container_name: ${CONTAINER_NAME}
     ports:
       - "27017:27017"
-      - "3000:3000"
     volumes:
       - ${LOCAL_DIR}:${CONTAINER_DIR}
