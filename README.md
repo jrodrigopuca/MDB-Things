@@ -1,7 +1,9 @@
 # MDB-Things
-
+## Instrucciones
+```
 docker-compose up -d
 docker exec -it mdbase mongosh
+```
 
 ## Base de datos
 - Contenedor físico de colecciones
@@ -21,6 +23,7 @@ docker exec -it mdbase mongosh
 - Un registro dentro de una colección
 - Es parecido a un JSON, es un BSON (codificación binaria de documentos JSON)
 - es la únidad básica de MongoDB
+- no puede ser mayor a 16MB
 
 ## Básicos
 ver bases de datos
@@ -147,4 +150,137 @@ Del mismo modo también se puede usar con el deleteMany (para múltiples documen
 Para este caso, al no tener filtro, elimina a todos
 ```
 db.message.deleteMany({})
+```
+
+## Tipos de datos
+```
+String      "Texto"
+Boolean     True/False
+ObjectId    ObjectId("23de..")
+Date        ISODate("2022-01-19..")
+
+Number 
+    - Double
+    - Int32/Int64
+    - Decimal
+```
+
+## Documentos embebidos
+Los documentos pueden tener dentro sub-documentos, ejemplo:
+En este caso "user" es un documento dentro del documento principal
+```
+    {
+        "text": "Prueba 5",
+        "user": {
+            "id": 9,
+            "name": "Juan"
+        },..
+    }
+```
+
+## Esquemas
+Los esquemas son la forma en la que organizamos los documentos dentro de una colección
+- No se impone ningún esquema
+- es flexible para agregar campos
+
+Relaciones:
+- uno a uno: documentos embebidos
+```
+    // libro - autor
+    {
+        _id:988,
+        title: 'Libro 1'
+        author: {
+            name: 'Juan'
+        }
+    }
+```
+- uno a muchos: usar referencias como array
+```
+    // editorial - libros
+    {
+        _id:899089879,
+        name: 'e1'
+        libro: ['321e','323d']
+    }
+```
+- muchos a uno: usar referencias en campo. 
+```
+    // libros - editorial
+    {
+        _id:988,
+        title: 'Libro 1'
+
+        editorial_id: 'e1'
+    }
+```
+
+## Filtros (Filter)
+```
+{campo: {filtro: valor}}
+
+// ejemplo: 
+db.message.find({source:"web"})
+
+// ejemplo usando el operador $in: 
+db.message.find({source:{$in:["web"]}})
+```
+
+## Proyecciones (Project)
+Permiten traer solamente algunos campos no todo el documento. Con 1 se muestra, con 0 no se muestra (solo para _id)
+```
+// traer todos los elementos que tengan a web como source
+// y solamente mostrar los campos text, views_count
+// y sin mostrar id
+db.message.find({source:"web"}, {text:1, views_count:1, _id:0})
+```
+
+# Operadores
+MongoDB provee múltiples operadores para trabajar con datos.
+[Lista completa](https://docs.mongodb.com/manual/reference/operator/)
+
+## Operadores de comparación
+```
+$eq     =   equal
+$gt     >   greater than
+$gte    >=  greater than or equal
+$lt     <   lower than
+$lte    >=  lower than or equal
+$ne     !=  not equal
+$in         include (valores dentro de un array)
+$nin        not include (valores no encontrados dentro de un array)
+```
+
+## Operadores lógicos
+```
+$and        Y lógico
+$not        Negado lógico
+$nor        O Negado lógico
+$or         O lógico
+```
+
+## Operadores por elemento
+```
+$exist      Documentos que tienen un campo en específico
+$type       Documentos que cuentan con un tipo específico
+```
+
+## Operadores para arrays
+```
+$all        Documentos que contengan todos los elementos de la query
+$elemMatch  Documentos que cumplan con la condición $elemMatch en uno de sus elementos
+$size       Documentos que contienen un campo array de un tamaño en específico
+```
+
+## Operadores para relacionar elementos
+https://docs.mongodb.com/manual/reference/operator/update/addToSet/
+
+https://platzi.com/clases/1533-mongodb/18555-usando-operadores-para-realizar-updates-en-arreglo/
+```
+db.message.updateOne({_id: ObjectId("61e4aa74caebd6cf158ffeb3")}, {$addToSet:{tags: "nuevo"}})
+
+db.message.updateOne(
+    {'_id': ObjectId('61e4aa74caebd6cf158ffeb3')}, 
+    {'$pull':{'tags': 'test'}}
+)
 ```
