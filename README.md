@@ -274,8 +274,6 @@ $size       Documentos que contienen un campo array de un tamaño en específico
 
 ## Operadores para relacionar elementos
 https://docs.mongodb.com/manual/reference/operator/update/addToSet/
-
-https://platzi.com/clases/1533-mongodb/18555-usando-operadores-para-realizar-updates-en-arreglo/
 ```
 db.message.updateOne({_id: ObjectId("61e4aa74caebd6cf158ffeb3")}, {$addToSet:{tags: "nuevo"}})
 
@@ -283,4 +281,25 @@ db.message.updateOne(
     {'_id': ObjectId('61e4aa74caebd6cf158ffeb3')}, 
     {'$pull':{'tags': 'test'}}
 )
+```
+
+## Agregaciones
+Son operaciones avanzadas 
+
+# Indices
+Sirven para acelerar las consultas por un campo determinado
+pueden ser:
+- de un solo campo
+- compuestos
+- multi llave
+- geoespaciales
+- de texto
+- hashed
+
+```
+show collections                #mostrar las colecciones
+db.cursos.getIndexes()          #ver los indices preexistentes
+db.cursos.createIndex({nombre:"text"})      # crear un nuevo indice
+db.cursos.find({$text: {$search: "Inicio"}}, {nombre: 1})   #buscar por el nuevo indice
+
 ```
