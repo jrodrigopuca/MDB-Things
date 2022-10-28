@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  a(href='/food') Volver
+
+  h1 New food
+
+  br
+  form(action='/food/create' method='post')
+    label(for='id') ID
+    input#id(type="text" name="id")
+    br
+
+    label(for='type') Type
+    input#type(type="text" name="type")
+    br
+
+    label(for='name') Name
+    input#name(type="text" name="name")
+    br
+
+    input.btn(type='submit' value='Send')

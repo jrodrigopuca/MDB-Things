@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  a(href='/food/create') Create
+
+  ul
+    each food in foods 
+      li 
+        p= food.id
+        p= food.type
+        p= food.name
+        p   
+          a(href=`/food/${food.id}/update`) Update
+        p   
+          form.inline(method='post' action=`/food/${food.id}/delete`)
+            input(type='hidden' name='id' value=food.id)
+            button.link-button(type='submit' name='submitParam' value='submitValue')
+              = 'Delete'

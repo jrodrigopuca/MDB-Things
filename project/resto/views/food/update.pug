@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  a(href='/food') Volver
+
+  h1 Edit food
+
+  br
+  form(action=`/food/${food.id}/update` method='post')
+    label(for='id') ID
+    input#id(type="text" name="id" value=food.id)
+    br
+
+    label(for='type') Type
+    input#type(type="text" name="type" value=food.type)
+    br
+
+    label(for='name') Name
+    input#name(type="text" name="name" value=food.name)
+    br
+
+    input.btn(type='submit' value='Send')
